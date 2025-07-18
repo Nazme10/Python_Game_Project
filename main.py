@@ -21,8 +21,8 @@ class Main:
         self.font = pygame.font.SysFont("Arial", 24)
 
     def run_game(self):
-        x =100
-        y=100
+        #x =100
+        #y=100
        
         while True:
             events = pygame.event.get()
@@ -34,9 +34,9 @@ class Main:
             self.screen.fill(self.settings.bg_color)
             self.render_fps(self.screen, self.clock, self.font)
             self.ship.blitme()
-            pygame.draw.rect(self.screen, (72, 61, 139), (x,y,200,400))
-            x+=.1
-            y+=.2
+            pygame.draw.rect(self.screen, (72, 61, 139), (100,200,200,400))
+            #x+=.1
+            #y+=.2
             
             pygame.display.flip()
             self.clock.tick()

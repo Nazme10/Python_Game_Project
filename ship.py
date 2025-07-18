@@ -1,8 +1,14 @@
+import pygame
+
 class Ship:
     def __init__(self,screen):
         ship_image = pygame.image.load('./Image/spaceship.png')
         self.ship_image = pygame.transform.scale_by(ship_image, .07)
         self.screen=screen
+        self.ship_rect = self.ship_image.get_rect()
+        self.screen_rect = self.screen.get_rect()
+        self.ship_rect.midbottom = self.screen_rect.midbottom
+        self.ship_rect.y -= 30
 
     def blitme(self):
-        self.screen.blit(self.ship_image,(550,350))
+        self.screen.blit(self.ship_image,self.ship_rect)

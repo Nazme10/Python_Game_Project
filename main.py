@@ -1,6 +1,7 @@
 import pygame
 from settings import Settings
 from ship import Ship
+from math import floor,ceil,round
 
 
 
@@ -92,13 +93,13 @@ class Main:
 
     def render_ship(self):
         if self.moving_right == True:
-                self.ship.ship_rect.x += 1
+                self.ship.ship_rect.x += floor(2*self.settings.ship_speed)
         if self.moving_left == True:
-            self.ship.ship_rect.x -= 1
+            self.ship.ship_rect.x -= floor(2*self.settings.ship_speed)
         if self.moving_up == True:
-                self.ship.ship_rect.y -= 1
+                self.ship.ship_rect.y -= floor(2*self.settings.ship_speed)
         if self.moving_down == True:
-                self.ship.ship_rect.y += 1
+                self.ship.ship_rect.y += floor(2*self.settings.ship_speed)
         self.ship.blitme()
 
     def render(self):

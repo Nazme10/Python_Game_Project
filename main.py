@@ -1,7 +1,7 @@
 import pygame
 from settings import Settings
 from ship import Ship
-from math import floor,ceil,round
+from math import floor
 
 
 
@@ -18,11 +18,7 @@ class Main:
         self.clock = pygame.time.Clock()
         self.ship = Ship(self.screen)
 
-         #movement flags 
-        self.moving_right = False
-        self.moving_left = False
-        self.moving_up = False
-        self.moving_down = False
+        
 
         # Font for FPS
         self.font = pygame.font.SysFont("Arial", 24)
@@ -56,52 +52,33 @@ class Main:
         
             elif event.type == pygame.KEYDOWN: 
                 if event.key == pygame.K_RIGHT:
-                    self.moving_right = True
+                    self.ship.moving_right = True
 
                 elif event.key == pygame.K_LEFT:
-                    self.moving_left = True
+                    self.ship.moving_left = True
 
                 elif event.key == pygame.K_UP:
-                    self.moving_up = True
+                    self.ship.moving_up = True
 
                 elif event.key == pygame.K_DOWN:
-                    self.moving_down = True
+                    self.ship.moving_down = True
             
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_RIGHT:
-                    self.moving_right = False
+                    self.ship.moving_right = False
 
                 elif event.key == pygame.K_LEFT:
-                    self.moving_left = False
+                    self.ship.moving_left = False
                     
                 elif event.key == pygame.K_UP:
-                    self.moving_up = False
+                    self.ship.moving_up = False
 
                 elif event.key == pygame.K_DOWN:
-                    self.moving_down = False
+                    self.ship.moving_down = False
 
             
-        #keys = pygame.key.get_pressed()
-        # #if keys[pygame.K_UP]:
-        #     self.ship.ship_rect.y -= 2
-        # #if keys[pygame.K_DOWN]:
-        #     self.ship.ship_rect.y += 2
-        # #if keys[pygame.K_LEFT]:
-        #     self.ship.ship_rect.x -= 2
-        # #if keys[pygame.K_RIGHT]:
-        # ##    self.ship.ship_rect.x += 2
-
-    def render_ship(self):
-        if self.moving_right == True:
-                self.ship.ship_rect.x += floor(2*self.settings.ship_speed)
-        if self.moving_left == True:
-            self.ship.ship_rect.x -= floor(2*self.settings.ship_speed)
-        if self.moving_up == True:
-                self.ship.ship_rect.y -= floor(2*self.settings.ship_speed)
-        if self.moving_down == True:
-                self.ship.ship_rect.y += floor(2*self.settings.ship_speed)
-        self.ship.blitme()
-
+      
+        
     def render(self):
             self.screen.fill(self.settings.bg_color)
             self.render_fps(self.screen, self.clock, self.font)
@@ -110,7 +87,7 @@ class Main:
             #pygame.draw.rect(self.screen, (72, 61, 139), (100,200,200,400))
             #x+=.1
             #y+=.2
-            self.render_ship()
+            self.ship.update()
             pygame.display.flip()
             self.clock.tick()        
 

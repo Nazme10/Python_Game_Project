@@ -2,6 +2,7 @@ import pygame
 from settings import Settings
 from ship import Ship
 from math import floor
+from bullet import Bullet
 
 
 
@@ -10,13 +11,13 @@ class Main:
         pygame.init()
         self.settings = Settings()
 
-        self.screen = pygame.display.set_mode(size = (
-            self.settings.width,
-            self.settings.height
-            ))
+        self.screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
+            
         pygame.display.set_caption('Alien Invasion')
         self.clock = pygame.time.Clock()
         self.ship = Ship(self.screen)
+        self.bullets = pygame.sprite.Group()
+        
 
         
 
@@ -30,6 +31,11 @@ class Main:
         while True:
             self.check_event()
             self.render()
+            self.ship.update()
+            self.bullets.update()
+            for bullet in self.bullets.copy():
+                if bullet.rect.top <= 50:
+                    self.bullets.remove(bullet)
 
             self.screen.fill(self.settings.bg_color)
             #self.render_fps(self.screen, self.clock, self.font)
@@ -51,6 +57,11 @@ class Main:
         #flagging
         
             elif event.type == pygame.KEYDOWN: 
+
+                if event.key == pygame.K_q:
+                    pygame.quit()
+                    exit()
+
                 if event.key == pygame.K_RIGHT:
                     self.ship.moving_right = True
 
@@ -62,6 +73,9 @@ class Main:
 
                 elif event.key == pygame.K_DOWN:
                     self.ship.moving_down = True
+
+                elif event.key == pygame.K_SPACE:
+                    self.create_bullet()
             
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_RIGHT:
@@ -76,7 +90,9 @@ class Main:
                 elif event.key == pygame.K_DOWN:
                     self.ship.moving_down = False
 
-            
+    def create_bullet(self):       
+        new_bullet = Bullet(self)
+        self.bullets.add(new_bullet)
       
         
     def render(self):
@@ -87,7 +103,11 @@ class Main:
             #pygame.draw.rect(self.screen, (72, 61, 139), (100,200,200,400))
             #x+=.1
             #y+=.2
-            self.ship.update()
+            self.ship.blitme()
+
+            for bullet in self.bullets.sprites():
+             bullet.draw_bullet()
+
             pygame.display.flip()
             self.clock.tick()        
 

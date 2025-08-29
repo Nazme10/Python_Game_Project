@@ -4,6 +4,7 @@ from ship import Ship
 from math import floor
 from bullet import Bullet
 from alien import Alien
+from game_stats import GameStats
 
 
 
@@ -26,6 +27,8 @@ class Main:
         #creatre a group of aliens
         self.aliens =  pygame.sprite.Group()
         self.create_fleet()
+        #initialize game stats
+        self.game_stats = GameStats(self)
       
         
 
@@ -43,7 +46,7 @@ class Main:
             self.render()
             self.ship.update()
             self.update_bullets()
-            self.aliens.update()
+            self.update_aliens()
             self.check_fleet_edges()
             #self.screen.fill(self.settings.bg_color)
             #self.render_fps(self.screen, self.clock, self.font)
@@ -55,6 +58,21 @@ class Main:
             #pygame.display.flip()
             self.clock.tick(60)
 
+    def update_aliens(self):
+        self.aliens.update()
+
+        if pygame.sprite.spritecollideany(self.ship, self.aliens):
+            self.ship_hit()
+
+    def ship_hit(self):
+        self.game_stats.ships_left -= 1
+        self.aliens.empty()
+        self.bullets.empty()
+        self.create_fleet()
+        self.ship.rect.midbottom = self.screen.get_rect().midbottom
+        self.shiprect.y -= 10
+        self.ship.x = float(self.ship.rect.x)
+    
     def update_bullets(self):
         self.bullets.update()
         for bullet in self.bullets.copy():

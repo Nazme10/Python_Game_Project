@@ -8,13 +8,13 @@ class Ship:
         self.settings = Settings()
         self.screen=screen
 
-        self.ship_rect = self.ship_image.get_rect()
+        self.rect = self.ship_image.get_rect()
         self.screen_rect = self.screen.get_rect()
-        self.ship_rect.midbottom = self.screen_rect.midbottom
-        self.ship_rect.y -= 10
+        self.rect.midbottom = self.screen_rect.midbottom
+        self.rect.y -= 10
 
-        self.x = float(self.ship_rect.x)
-        self.y = float(self.ship_rect.y)
+        self.x = float(self.rect.x)
+        self.y = float(self.rect.y)
 
         #movement flags 
         self.moving_right = False
@@ -23,20 +23,20 @@ class Ship:
         self.moving_down = False
 
     def update(self):
-        if self.moving_right == True and self.ship_rect.right < self.screen_rect.right:
+        if self.moving_right == True and self.rect.right < self.screen_rect.right:
             self.x += self.settings.ship_speed
-        if self.moving_left == True and self.ship_rect.left > self.screen_rect.left:
+        if self.moving_left == True and self.rect.left > self.screen_rect.left:
             self.x -= self.settings.ship_speed
 
-        self.ship_rect.x = self.x
-        if self.moving_up == True and self.ship_rect.top > self.screen_rect.top:
+        self.rect.x = self.x
+        if self.moving_up == True and self.rect.top > self.screen_rect.top:
                 self.y -= self.settings.ship_speed
-        if self.moving_down == True and self.ship_rect.bottom < self.screen_rect.bottom:
+        if self.moving_down == True and self.rect.bottom < self.screen_rect.bottom:
                 self.y += self.settings.ship_speed
 
-        self.ship_rect.y = self.y
+        self.rect.y = self.y
         
 
 
     def blitme(self):
-        self.screen.blit(self.ship_image,self.ship_rect)
+        self.screen.blit(self.ship_image,self.rect)

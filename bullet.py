@@ -9,12 +9,12 @@ class Bullet(Sprite):
         self.setting = game.settings
         self.ship = game.ship
 
-        self.rect = pygame.Rect(0,0,25,50)
+        self.rect = pygame.Rect(0,0,15,30)
         self.rect.midtop = self.ship.ship_rect.midtop
         self.y = float(self.rect.y)
 
     def update(self):
-        self.y -= 1
+        self.y -= self.setting.bullet_speed
         self.rect.y = self.y
 
     def draw_bullet(self):

@@ -60,7 +60,9 @@ class Main:
         for bullet in self.bullets.copy():
             if bullet.rect.top <= 0:
                 self.bullets.remove(bullet)
-
+        collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)       
+        if len(self.aliens) == 0:
+            self.create_fleet()
 
     def check_event(self):
         for event in pygame.event.get():
@@ -142,7 +144,14 @@ class Main:
          if self.aliens:
           for alien in self.aliens.sprites():
              if alien.check_edges():
-                 self.settings.alien_direction *= -1 
+                 self.change_alien_direction()
+                 break
+                 
+
+    def change_alien_direction(self):
+        for alien in self.aliens.sprites():
+             alien.rect.y += self.settings.alien_drop_speed
+        self.settings.alien_direction *= -1 
 
     def render(self):
             self.screen.fill(self.settings.bg_color)

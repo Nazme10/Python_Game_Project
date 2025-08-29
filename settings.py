@@ -8,3 +8,6 @@ class Settings:
 
         self.bullet_speed = 50
         self.bullet_limit = 10
+
+        self.alien_speed = 3
+        self.alien_direction = 1

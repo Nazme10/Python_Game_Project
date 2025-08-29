@@ -14,7 +14,7 @@ class Main:
         pygame.init()
         self.settings = Settings()
 
-        self.screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
+        self.screen = pygame.display.set_mode(size=(self.settings.width, self.settings.height))
             
         pygame.display.set_caption('Alien Invasion')
         self.clock = pygame.time.Clock()
@@ -43,7 +43,8 @@ class Main:
             self.render()
             self.ship.update()
             self.update_bullets()
-            
+            self.aliens.update()
+            self.check_fleet_edges()
             #self.screen.fill(self.settings.bg_color)
             #self.render_fps(self.screen, self.clock, self.font)
             #self.ship.blitme()
@@ -114,7 +115,7 @@ class Main:
        #calculating the number of aliens per row
         alien_width = alien.rect.width
         available_space_x = self.settings.width - (alien_width)
-        number_of_aliens_x = available_space_x // (2*alien_width)
+        number_of_aliens_x = available_space_x // (2 * alien_width)
 
          #calculating the number of rows
         alien_height = alien.rect.height
@@ -137,8 +138,12 @@ class Main:
         alien.rect.y = alien.y
         self.aliens.add(alien)
 
-      
-        
+    def check_fleet_edges(self):
+         if self.aliens:
+          for alien in self.aliens.sprites():
+             if alien.check_edges():
+                 self.settings.alien_direction *= -1 
+
     def render(self):
             self.screen.fill(self.settings.bg_color)
             self.render_fps(self.screen, self.clock, self.font)

@@ -4,7 +4,7 @@ from settings import Settings
 class Ship:
     def __init__(self,screen):
         ship_image = pygame.image.load('./Image/spaceship.png')
-        self.ship_image = pygame.transform.scale_by(ship_image, .09)
+        self.ship_image = pygame.transform.scale_by(ship_image, .15)
         self.settings = Settings()
         self.screen=screen
 

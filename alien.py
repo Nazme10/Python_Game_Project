@@ -21,7 +21,7 @@ class Alien(Sprite):
 #set the rect for the alien
    self.rect = self.image.get_rect()
    self.screen_rect = self.screen.get_rect()
-
+   self.rect.y = 40
 
    self.rect.topleft = self.screen_rect.topleft
    self.x = float(self.rect.x)

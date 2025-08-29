@@ -111,16 +111,31 @@ class Main:
 
     def create_fleet(self):
         alien = Alien(self)
-       
+       #calculating the number of aliens per row
         alien_width = alien.rect.width
-        available_space_x = self.settings.width - (2 * alien_width)
-        number_of_aliens_x = available_space_x // (alien_width)
+        available_space_x = self.settings.width - (alien_width)
+        number_of_aliens_x = available_space_x // (2*alien_width)
+
+         #calculating the number of rows
+        alien_height = alien.rect.height
+        available_space_y = self.settings.height - self.settings.height //2
+        number_of_rows = available_space_y // (2*alien_height)
 
         for i in range(number_of_aliens_x):
-            alien = Alien(self)
-            alien.x = alien_width + (2 * alien_width * i)
-            alien.rect.x = alien.x
-            self.aliens.add(alien)
+            for j in range(number_of_rows):
+             self.create_alien(i,j)
+           
+    def create_alien(self,ind,row):
+        alien = Alien(self)
+        alien_width = alien.rect.width
+        alien.x = alien_width + (2*alien_width*ind)
+        alien.rect.x = alien.x
+        
+
+        alien_height = alien.rect.height
+        alien.y = alien_height + (2*alien_height*row)
+        alien.rect.y = alien.y
+        self.aliens.add(alien)
 
       
         

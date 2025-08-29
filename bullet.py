@@ -9,7 +9,7 @@ class Bullet(Sprite):
         self.setting = game.settings
         self.ship = game.ship
 
-        self.rect = pygame.Rect(0,0,10,20)
+        self.rect = pygame.Rect(0,0,30,60)
         self.rect.midtop = self.ship.ship_rect.midtop
         self.y = float(self.rect.y)
 

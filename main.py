@@ -3,11 +3,14 @@ from settings import Settings
 from ship import Ship
 from math import floor
 from bullet import Bullet
+from alien import Alien
+
 
 
 
 class Main:
     def __init__(self):
+        #pygame is a wrapper for SDL
         pygame.init()
         self.settings = Settings()
 
@@ -15,8 +18,15 @@ class Main:
             
         pygame.display.set_caption('Alien Invasion')
         self.clock = pygame.time.Clock()
+        #create a ship
         self.ship = Ship(self.screen)
+
+        #creatre a group of bullets
         self.bullets = pygame.sprite.Group()
+        #creatre a group of aliens
+        self.aliens =  pygame.sprite.Group()
+        self.create_fleet()
+      
         
 
         
@@ -27,25 +37,29 @@ class Main:
     def run_game(self):
         #x =100
         #y=100
-       
+        
         while True:
             self.check_event()
             self.render()
             self.ship.update()
-            self.bullets.update()
-            for bullet in self.bullets.copy():
-                if bullet.rect.top <= 50:
-                    self.bullets.remove(bullet)
-
-            self.screen.fill(self.settings.bg_color)
+            self.update_bullets()
+            
+            #self.screen.fill(self.settings.bg_color)
             #self.render_fps(self.screen, self.clock, self.font)
-            self.ship.blitme()
+            #self.ship.blitme()
             #pygame.draw.rect(self.screen, (72, 61, 139), (100,200,200,400))
             #x+=.1
             #y+=.2
             
-            pygame.display.flip()
-            self.clock.tick()
+            #pygame.display.flip()
+            self.clock.tick(60)
+
+    def update_bullets(self):
+        self.bullets.update()
+        for bullet in self.bullets.copy():
+            if bullet.rect.top <= 0:
+                self.bullets.remove(bullet)
+
 
     def check_event(self):
         for event in pygame.event.get():
@@ -91,8 +105,23 @@ class Main:
                     self.ship.moving_down = False
 
     def create_bullet(self):       
-        new_bullet = Bullet(self)
-        self.bullets.add(new_bullet)
+        if len(self.bullets) < self.settings.bullet_limit:
+         new_bullet = Bullet(self)
+         self.bullets.add(new_bullet)
+
+    def create_fleet(self):
+        alien = Alien(self)
+       
+        alien_width = alien.rect.width
+        available_space_x = self.settings.width - (2 * alien_width)
+        number_of_aliens_x = available_space_x // (alien_width)
+
+        for i in range(number_of_aliens_x):
+            alien = Alien(self)
+            alien.x = alien_width + (2 * alien_width * i)
+            alien.rect.x = alien.x
+            self.aliens.add(alien)
+
       
         
     def render(self):
@@ -107,6 +136,8 @@ class Main:
 
             for bullet in self.bullets.sprites():
              bullet.draw_bullet()
+
+            self.aliens.draw(self.screen)
 
             pygame.display.flip()
             self.clock.tick()        

@@ -22,6 +22,14 @@ class Ship:
         self.moving_up = False
         self.moving_down = False
 
+    def center_ship(self):
+    #Center the ship on the screen."""
+          self.rect.midbottom = self.screen_rect.midbottom
+          self.rect.y -= 10  # keep the small upward offset you had
+          self.x = float(self.rect.x)
+          self.y = float(self.rect.y)
+      
+
     def update(self):
         if self.moving_right == True and self.rect.right < self.screen_rect.right:
             self.x += self.settings.ship_speed

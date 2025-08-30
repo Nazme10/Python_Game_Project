@@ -10,7 +10,7 @@ class Bullet(Sprite):
         self.ship = game.ship
 
         self.rect = pygame.Rect(0,0,15,30)
-        self.rect.midtop = self.ship.ship_rect.midtop
+        self.rect.midtop = self.ship.rect.midtop
         self.y = float(self.rect.y)
 
     def update(self):

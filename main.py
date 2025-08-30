@@ -4,7 +4,9 @@ from ship import Ship
 from math import floor
 from bullet import Bullet
 from alien import Alien
-from game_stats import GameStats
+from game_stats import Gamestats
+from button import Button
+from time import sleep
 
 
 
@@ -28,7 +30,8 @@ class Main:
         self.aliens =  pygame.sprite.Group()
         self.create_fleet()
         #initialize game stats
-        self.game_stats = GameStats(self)
+        self.game_stats = Gamestats(self)
+        self.play_button = Button(self, "Play")
       
         
 
@@ -63,15 +66,30 @@ class Main:
 
         if pygame.sprite.spritecollideany(self.ship, self.aliens):
             self.ship_hit()
+        self.check_aliens_bottom()
+
+
+    def check_aliens_bottom(self):
+        screen_rect = self.screen.get_rect()
+        for alien in self.aliens.sprites():
+            if alien.rect.bottom >= screen_rect.bottom:
+                self.ship_hit()
+                break
+
 
     def ship_hit(self):
-        self.game_stats.ships_left -= 1
-        self.aliens.empty()
-        self.bullets.empty()
-        self.create_fleet()
-        self.ship.rect.midbottom = self.screen.get_rect().midbottom
-        self.shiprect.y -= 10
-        self.ship.x = float(self.ship.rect.x)
+        if self.game_stats.ships_left > 0:
+          self.game_stats.ships_left -= 1
+          #self.aliens.empty()
+          self.bullets.empty()
+          #self.create_fleet()
+          self.ship.rect.midbottom = self.screen.get_rect().midbottom
+          self.ship.rect.y -= 10
+          self.ship.x = float(self.ship.rect.x)
+          self.ship.y = float(self.ship.rect.y)
+          pygame.mouse.set_visible(True)
+
+          sleep(1)
     
     def update_bullets(self):
         self.bullets.update()
@@ -88,6 +106,10 @@ class Main:
             if event.type == pygame.QUIT: 
                 pygame.quit()
                 return
+            
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+             mouse_pos = pygame.mouse.get_pos()
+             self._check_play_button(mouse_pos)
             
         #flagging
         
@@ -124,6 +146,23 @@ class Main:
 
                 elif event.key == pygame.K_DOWN:
                     self.ship.moving_down = False
+
+
+    def _check_play_button(self, mouse_pos):
+     #Start a new game when the player clicks Play.
+      if self.play_button.rect.collidepoint(mouse_pos):
+       self.game_stats.game_active = True  
+       # Hide the mouse cursor.
+       pygame.mouse.set_visible(False)
+       # Reset the game statistics.
+       self.game_stats.reset_stats()
+       self.game_stats.game_active = True
+
+       self.aliens.empty()
+       self.bullets.empty()
+     # Create a new fleet and center the ship.
+       self.create_fleet()
+       self.ship.center_ship()
 
     def create_bullet(self):       
         if len(self.bullets) < self.settings.bullet_limit:
@@ -185,6 +224,8 @@ class Main:
              bullet.draw_bullet()
 
             self.aliens.draw(self.screen)
+            if not self.game_stats.game_active:
+             self.play_button.draw_button()
 
             pygame.display.flip()
             self.clock.tick()        

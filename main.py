@@ -80,16 +80,20 @@ class Main:
     def ship_hit(self):
         if self.game_stats.ships_left > 0:
           self.game_stats.ships_left -= 1
-          #self.aliens.empty()
+          self.aliens.empty()
           self.bullets.empty()
-          #self.create_fleet()
+          self.create_fleet()
           self.ship.rect.midbottom = self.screen.get_rect().midbottom
           self.ship.rect.y -= 10
           self.ship.x = float(self.ship.rect.x)
           self.ship.y = float(self.ship.rect.y)
-          pygame.mouse.set_visible(True)
+          #pygame.mouse.set_visible(True)
 
           sleep(1)
+
+        else:
+            self.game_stats.game_active = False
+            pygame.mouse.set_visible(True)
     
     def update_bullets(self):
         self.bullets.update()
